@@ -10,14 +10,14 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Types
-    
+    //swift: enum + struct
     enum ShortcutIdentifier: String {
         case First
         case Second
         case Third
         case Fourth
         
-        // MARK: - Initializers
+        // MARK: - 构造函数
         
         init?(fullType: String) {
             guard let last = fullType.componentsSeparatedByString(".").last else { return nil }
@@ -25,14 +25,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.init(rawValue: last)
         }
         
-        // MARK: - Properties
+        // MARK: - 属性
         
         var type: String {
             return NSBundle.mainBundle().bundleIdentifier! + ".\(self.rawValue)"
         }
     }
     
-    // MARK: - Static Properties
+    // MARK: - 静态属性
     
     static let applicationShortcutUserInfoIconKey = "applicationShortcutUserInfoIconKey"
     
@@ -107,18 +107,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 AppDelegate.applicationShortcutUserInfoIconKey: UIApplicationShortcutIconType.Pause.rawValue
                 ]
             )
+            /*
+             type: The required, app-defined type of the Home screen quick action.
+             localizedTitle: The required, user-visible title of the Home screen quick action.
+             localizedSubtitle:The optional, user-visible subtitle of the Home screen quick action.
+             icon:The optional icon for the Home screen quick action.
+             userInfo: App-defined information about the Home screen quick action, to be used by your app to implement the action.
+             */
             
+            let shortcut5 : UIMutableApplicationShortcutItem = UIMutableApplicationShortcutItem(type: ShortcutIdentifier.Second.type, localizedTitle: "Home", localizedSubtitle: "哈哈", icon: UIApplicationShortcutIcon(type:.Home), userInfo: [AppDelegate.applicationShortcutUserInfoIconKey:UIApplicationShortcutIconType.Home.rawValue])
+            print(ShortcutIdentifier.First.type + ShortcutIdentifier.Second.type + ShortcutIdentifier.Third.type + ShortcutIdentifier.Fourth.type)
             // Update the application providing the initial 'dynamic' shortcut items.
-            application.shortcutItems = [shortcut3, shortcut4]
+            application.shortcutItems = [shortcut3, shortcut4,shortcut5]//UIApplicationShortcutItem or UIMutableApplicationShortcutItem
         }
         
         return shouldPerformAdditionalDelegateHandling
         
     }
-    /**
-      运用激活：当点击 快捷方式进入app
-     
-     */
+
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         guard let shortcut = launchedShortcutItem else { return }
